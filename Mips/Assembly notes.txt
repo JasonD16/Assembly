@@ -1,0 +1,175 @@
+Assembly notes
+There is always ".data" segment and a ".text" segment; .data contains all the variables and .text contains all the instructions or function
+
+Lesson 1: how to print pre-initialized words
+	when printing a word we must initialise the word in .data:
+	ex:
+	.data
+		Variable_Name: .asciiz "word" 
+
+	#then we need to follow these steps in .text
+
+	.text
+		li $v0, 4 		# this lets the assembler know that we want to print something; li = Load Immediate
+		la $a0, Variable_Name	# this lets the assembler know what you want to download(its in a0)
+		syscall			# this ends the code
+
+	Click run --> assemble, if there are no errors click on the green play button and the code excecutes.
+
+Lesson 2: how to print characters
+	we use ".byte" instead of ".asciiz" when initializing in .data
+	ex:
+	.data
+		Variable_Name: .byte 'C'
+	
+	#the .text part for printing the character is the same as the one for printing a word/
+
+Lesson 3: how to print integers
+	the basic unit in MIPS assembly is word, a word is 32 bits or 4 bytes, when initializing an integer we use ".word"
+	ex:
+	.data
+		age: .word 18 
+
+	.text
+		li $v0, 1	# we used 1 instead of 4 like the previous examples bcs when using 1 the assembler knows we want to print an integer
+		lw $a0, age	#we used lw: Load Word bcs as we mentioned before the unit in Mips assembly is word and integers are stroed as words 
+		syscall
+	
+Lesson 4: how to print a float(decimnal)
+	the data type float is initialized as ".float", we use 2 instead of 1 (for integers) and 4(for strings and characters) and we li it in v0
+	we cant use lw bcs it is a float so we use lwc1 (Load Word Coprocessor 1) and we load it in $f12, it does note work if its not in $f12
+	ex:
+	.data
+		fl: .float 1.8 
+
+	.text
+		li $v0, 2
+		lwc1 $f12, fl
+		syscall
+
+Lesson 5: how to print a double
+	
+	ex:
+	.data
+		myDouble: .double 7.202
+		zeroDouble: .double 0.0
+	
+	.text
+		ldc1 $f2, myDouble
+		ldc1 $f0, zeroDouble
+	
+		li $v0, 3
+		add.d $f12, $f2, $f0
+		syscall	
+
+Lesson 6: Adding Integers
+	.data
+		num1: .word 5
+		num2: .word 11
+	.text
+		lw $t0, num1($zero)
+		lw $t1, num2($zero)
+	
+		add $t2, $t0, $t1	# t2 = t0 + t1
+	
+		li $v0, 1		# 1 for integers
+		add $a0, $zero, $t2	# a0 = t2, we moved the value from t2 to a0
+		syscall	
+
+Lesson 7: Substracting integers
+	.data
+		num1: .word 20
+		num2: .word 8
+	.text
+		lw $s0, num1	# s0 = 20
+		lw $s1, num2	# s1 = 8
+	
+		sub $t0, $s0, $s1	# t0 = s0 - s1
+	
+		li $v0, 1
+		add $a0, $zero, $t0
+		syscall
+	
+Lesson 8: 
+	8.1) how to multiply with "mul"
+	mul takes three registers so it is R-format
+	DRAWBACK: YOU CAN ONLY MULTIPLY 2 16-BITS NUMBERS; IF THE NUMBERS ARE BIGGER WE NEED TO USE mult
+	ex:
+	.data
+	
+	.text
+		addi $s0, $zero, 10 # 10 is an immediant therefore it is 16 bits only
+		addi $s1, $zero, 4
+	
+		mul $t0, $s0, $s1
+	
+		li $v0, 1
+		add $a0, $zero, $t0
+		syscall
+	
+	8.2) how to multiply with "mult"
+	mult takes 2 registers so it is I-format
+	ex:
+	.data
+	
+	.text
+		addi $t0, $zero, 2000
+		addi $t1, $zero, 10
+	
+		mult $t0, $t1
+	
+		mflo $s0
+	
+		li $v0, 1
+		add $a0, $zero, $s0
+		syscall
+	
+	
+	8.3) sll
+	ex:
+	.data
+	
+	text
+		addi $s0, $zero, 4
+		sll $s0, $s0, 2
+	
+		li, $v0, 1
+		add $a0, $zero, $s0
+		syscall
+
+Lesson 9:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
