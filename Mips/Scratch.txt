@@ -1,0 +1,64 @@
+##### Red Cards ########
+SELECT_R1:
+move $a0, $t2
+jal INPUT_CHECK_RED
+
+lw $a0, rxpos1               # X position
+lw $a1, ypos1                # Y position
+la $a2, SELECT_RED         # Address of the card data
+la $a3, baseAddress       # Base memory address
+jal load_card             # Call the function
+j loop2
+
+
+
+
+
+
+
+
+
+
+INPUT_CHECK_RED:
+	li $t0, 1
+	lw $t0, 0xffff0004
+	beq $t0, 13, yes	#ENTER = 13 --> yes I want to choose that card
+	beq $t0, 16, no		#SHIFT = 16 --> NO I want to choose another card
+	j INPUT_CHECK_RED
+
+yes:
+	addi $sp, $sp, -8
+    	sw $ra, 4($sp)		#svaes the return address
+    	sw $a0, 0($sp)		#saves which card was chosen
+    	
+    	lw $s0, 0($sp)
+    	beq $a0, 49, REVEAL_RED_1
+    	j yes
+    	
+##### Red Cards ########
+REVEAL_RED_1:
+lw $a0, rxpos1               # X position
+lw $a1, ypos1                # Y position
+la $a2, ACE_HEART         # Address of the card data
+la $a3, baseAddress       # Base memory address
+jal load_card             # Call the 
+
+REVEAL_RED_2:
+REVEAL_RED_3:
+REVEAL_RED_4:
+REVEAL_RED_5:
+REVEAL_RED_6:
+REVEAL_RED_7:
+REVEAL_RED_8:
+
+##### BLUE Cards ########
+REVEAL_BLUE_1:
+REVEAL_BLUE_2:
+REVEAL_BLUE_3:
+REVEAL_BLUE_4:
+REVEAL_BLUE_5:
+REVEAL_BLUE_6:
+REVEAL_BLUE_7:
+REVEAL_BLUE_8:
+
+no:
