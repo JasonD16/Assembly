@@ -1,0 +1,15 @@
+.data
+chosen: .space 32
+.text
+	li $t0, 0
+	addi $t0, $t0, 8
+	sw $t0, chosen($t0)
+	addi $t0, $t0, 4
+	lw $t1, chosen ($t0)
+	
+	li $v0, 1
+	move $a0, $t1
+	syscall
+end: 
+	li $v0, 10
+	syscall
